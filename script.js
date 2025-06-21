@@ -42,6 +42,7 @@ const cleanGameboard = ()=>{
     })
 }
 
+
 const checkWin = ()=>{
     if (
     (squareOne.classList.contains('X') && squareTwo.classList.contains('X') && squareThree.classList.contains('X')) ||
@@ -63,16 +64,35 @@ const checkWin = ()=>{
     ) {
         endGame();
         alert('O wins');
+    } else if (
+        (squareOne.classList.contains('O') || squareOne.classList.contains('X')) &&
+        (squareTwo.classList.contains('O') || squareTwo.classList.contains('X')) &&
+        (squareThree.classList.contains('O') || squareThree.classList.contains('X')) &&
+        (squareFour.classList.contains('O') || squareFour.classList.contains('X')) &&
+        (squareFive.classList.contains('O') || squareFive.classList.contains('X')) &&
+        (squareSix.classList.contains('O') || squareSix.classList.contains('X')) &&
+        (squareSeven.classList.contains('O') || squareSeven.classList.contains('X')) &&
+        (squareEight.classList.contains('O') || squareEight.classList.contains('X')) &&
+        (squareNine.classList.contains('O') || squareNine.classList.contains('X'))  ) {
+        endGame();
+        alert('tie')
     } else {
         return
     }
 }
 
-const toggleTurns = (e)=>{
-    e.textContent += user.symbol;
-    square.classList.add(`${user.symbol}`);
+toggleTurns = (e)=>{
+    let selectedSymbol;
+    if (x.checked === true) {
+        selectedSymbol = 'X';
+    } else {
+        selectedSymbol = 'O';
+    }
+    e.textContent += selectedSymbol;
+    e.classList.add(selectedSymbol);
     checkWin();
 }
+
 
 const endGame = ()=>{
     squares.forEach((square)=>{
@@ -84,7 +104,7 @@ const endGame = ()=>{
 function startGame () {
     selectSymbol();
     cleanGameboard();
-
+    
     squares.forEach((square)=>{
         if (square.textContent === '') {
             square.addEventListener('click', toggleTurns)
@@ -92,42 +112,6 @@ function startGame () {
             return
         }
     })
-
-    // squares.forEach((square)=>{
-    //     if (square.textContent === '') {
-    //         if (user.symbol === 'X') {
-    //             square.addEventListener('click',()=>{
-    //             square.textContent += user.symbol;
-    //             square.classList.add(`${user.symbol}`);
-    //             checkWin();
-    //             })
-    //         } else if (user.symbol === 'O') {
-    //             square.textContent += 'X';
-    //             square.classList.add('X');
-    //             checkWin();
-    //         }
-    //     } else {
-    //         return
-    //     }
-    // })
-
-    // squares.forEach((square)=>{
-    //     square.addEventListener('click',(selectedSymbol)=>{
-    //         if (square.textContent === '') {
-    //             if (selectedSymbol == 'X') {
-    //                 square.textContent += 'X';
-    //                 square.classList.add('X');
-    //                 checkWin();
-    //             } else {
-    //                 square.textContent += 'O';
-    //                 square.classList.add('O');
-    //                 checkWin();
-    //             }
-    //         } else {
-    //             return;
-    //         }
-    //     })
-    // })
 }
 
 const gameboard = function(box) {

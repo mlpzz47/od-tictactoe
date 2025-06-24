@@ -2,25 +2,6 @@ const x = document.getElementById("X");
 const o = document.getElementById("O");
 const symbolInput = document.querySelectorAll(".symbol-input");
 
-const Player = function (symbol) {
-    this.symbol = symbol;
-
-    this.saySymbol = function() {
-        console.log(this.symbol)
-    }
-}
-
-const selectSymbol = ()=>{
-    let selectedSymbol;
-    if (x.checked === true) {
-        selectedSymbol = 'X';
-    } else {
-        selectedSymbol = 'O';
-    }
-    let user = new Player(selectedSymbol);
-    return user;
-}
-
 const squareOne = document.getElementById("square1");
 const squareTwo = document.getElementById("square2");
 const squareThree = document.getElementById("square3");
@@ -32,16 +13,26 @@ const squareEight = document.getElementById("square8");
 const squareNine = document.getElementById("square9");
 const squares = document.querySelectorAll('.square');
 
-const rowOne =  document.querySelectorAll('.row-1');
+const startGameBtn = document.getElementById("start-game-btn")
 
-const cleanGameboard = ()=>{
-    squares.forEach((square)=>{
-        square.textContent = '';
-        square.classList.remove('X');
-        square.classList.remove('O');
-    })
+const Player = function (symbol) {
+    this.symbol = symbol;
 }
 
+let humanSymbol;
+let computerSymbol;
+
+const selectSymbol = ()=>{
+    if (x.checked === true) {
+        humanSymbol = 'X';
+        computerSymbol = 'O';
+    } else {
+        humanSymbol = 'O';
+        computerSymbol = 'X';
+    }
+    let user = new Player(humanSymbol);
+    return user && humanSymbol && computerSymbol;
+}
 
 const checkWin = ()=>{
     if (
@@ -73,7 +64,7 @@ const checkWin = ()=>{
         (squareSix.classList.contains('O') || squareSix.classList.contains('X')) &&
         (squareSeven.classList.contains('O') || squareSeven.classList.contains('X')) &&
         (squareEight.classList.contains('O') || squareEight.classList.contains('X')) &&
-        (squareNine.classList.contains('O') || squareNine.classList.contains('X'))  ) {
+        (squareNine.classList.contains('O') || squareNine.classList.contains('X'))) {
         endGame();
         alert('tie')
     } else {
@@ -81,39 +72,51 @@ const checkWin = ()=>{
     }
 }
 
-toggleTurns = (e)=>{
-    let selectedSymbol;
-    if (x.checked === true) {
-        selectedSymbol = 'X';
-    } else {
-        selectedSymbol = 'O';
-    }
-    e.textContent += selectedSymbol;
-    e.classList.add(selectedSymbol);
-    checkWin();
-}
-
-
-const endGame = ()=>{
+const cleanGameboard = ()=>{
     squares.forEach((square)=>{
-        square.removeEventListener('click', toggleTurns);
+        square.textContent = '';
+        square.classList.remove('X');
+        square.classList.remove('O');
     })
 }
 
+const userMove = (e)=>{
+    const square = e.target;
+    if (square.textContent === '') {
+        square.textContent += humanSymbol;
+        square.classList.add(humanSymbol);
+        checkWin();
+        computerMoves();
+    }
+}
+
+const computerMoves = ()=>{
+    let emptySquares = Array.from(squares).filter(sq => sq.textContent === '');
+    if (emptySquares.length === 0) return;
+
+    let randomSquare = emptySquares[Math.floor(Math.random() * emptySquares.length)];
+    randomSquare.textContent = computerSymbol;
+    randomSquare.classList.add(computerSymbol);
+    checkWin();
+}
+
+const endGame = ()=>{
+    squares.forEach((square)=>{
+        square.removeEventListener('click', userMove);
+    })
+}
 
 function startGame () {
     selectSymbol();
     cleanGameboard();
-    
+
     squares.forEach((square)=>{
-        if (square.textContent === '') {
-            square.addEventListener('click', toggleTurns)
-        } else {
-            return
-        }
+        square.addEventListener('click', userMove)
     })
+
+    if (computerSymbol === 'X') {
+        computerMoves();
+    }
 }
 
-const gameboard = function(box) {
-    this.box = box;
-}
+startGameBtn.addEventListener('click', startGame)

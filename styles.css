@@ -44,6 +44,27 @@ h1, h2, h3, h4, h5, h6 {
     isolation: isolate;
 }
 
+form {
+    width: 50%;
+    margin: auto;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+fieldset {
+    padding: 10px 30px;
+}
+
+#start-game-btn {
+    background-color: #337;
+    color: #fff;
+    padding: 3px;
+    border-radius: 8px;
+    width: 60%;
+    margin: 10px auto;
+    cursor: pointer;
+}
 
 .wrapper {
     width: 100%;
@@ -67,6 +88,9 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
     text-align: center;
     font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .X {

@@ -68,7 +68,7 @@ const checkWin = ()=>{
         endGame();
         alert('tie')
     } else {
-        return
+        return false;
     }
 }
 
@@ -86,7 +86,9 @@ const userMove = (e)=>{
         square.textContent += humanSymbol;
         square.classList.add(humanSymbol);
         checkWin();
-        computerMoves();
+        if (checkWin() === false) {
+            computerMoves();
+        }
     }
 }
 
